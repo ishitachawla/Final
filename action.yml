@@ -1,0 +1,24 @@
+name: 'File Existence and Reader'
+description: 'Check existence and read'
+branding:
+  icon: 'file-text'
+  color: 'blue'
+inputs:
+  allow_failure:
+    description: 'Makes the Action fail on missing files.'
+    default: false
+    required: false
+  repository:
+    description: "Your GitHub repository"
+    default: "ishitachawla/Check-Requirements"
+    required: true
+  GITHUB_TOKEN:
+    description: 'Github Personal Access Token'
+    required: true
+  encoding:
+    description: 'The encoding of the file.'
+    default: 'utf8'
+    required: false
+runs:
+  using: 'node12'
+  main: 'index.js'
