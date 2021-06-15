@@ -44,6 +44,25 @@ fs.readdir('./', (err, files) => {
         console.log("code owners file absent");
     })
 
+      //dont have node modules in master for .ts
+      fs.readdir('./src',(err, filess ) => {
+        for(let i = 0; i < filess.length; i++)
+        console.log(filess[i]);
+        const isdotts = filess.includes('*.ts');
+        if(isdotts){
+          console.log("dot ts");
+          fs.readdir('./', (err, files) => {
+            const includesnm = files.includes('node_modules');
+            if(includesnm)
+              console.log("nm present error");
+            else
+              console.log("nm absent");
+          })
+        }
+        else
+          console.log("not .ts");
+      })
+
   //check brnch protection
     async function start(){ 
     try{
