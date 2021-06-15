@@ -1,0 +1,28 @@
+name: 'File Existence and Reader'
+description: 'Check existence and read'
+branding:
+  icon: 'file-text'
+  color: 'blue'
+inputs:
+  repo_name:
+    description: "Your GitHub repository"
+    default: "Check-Requirements"
+    required: true
+  repo_owner:
+    description: "owner"
+    default: "ishitachawla"
+    required: true
+  repo_branch:
+    description: "Branch"
+    default: "master"
+    required: true
+  GITHUB_TOKEN:
+    description: 'Github Personal Access Token'
+    required: true
+  encoding:
+    description: 'The encoding of the file.'
+    default: 'utf8'
+    required: false
+runs:
+  using: 'node12'
+  main: 'index.js'
