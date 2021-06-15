@@ -54,6 +54,7 @@ fs.readdir('./', (err, files) => {
       auth: secret_token,
     });
     const repository = core.getInput('repository');
+    console.log(repository);
     const result = await octokit.request('GET /repos/{repo}/branches/{branch}/protection/required_pull_request_reviews',{
     repo: repository,
     branch: 'main',
@@ -68,9 +69,6 @@ fs.readdir('./', (err, files) => {
       console.log(err);
       return "error";
 }
-
-
-    //end check commit
     
       }
       start();
