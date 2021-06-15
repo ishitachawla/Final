@@ -55,11 +55,12 @@ fs.readdir('./', (err, files) => {
     });
     const repository = core.getInput('repo_name');
     const ownername = core.getInput('repo_owner');
+    const branchname = core.getInput('repo_branch');
     console.log(repository);
     const result = await octokit.request('GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews',{
     repo: repository,
     owner: ownername,
-    branch: 'main',
+    branch: branchname,
     headers : { Authorization: 'Bearer ' + secret_token
                    
        }
