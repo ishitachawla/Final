@@ -53,10 +53,12 @@ fs.readdir('./', (err, files) => {
     const octokit = new Octokit({
       auth: secret_token,
     });
-    const repository = core.getInput('repository');
+    const repository = core.getInput('repo_name');
+    const ownername = core.getInput('repo_owner');
     console.log(repository);
-    const result = await octokit.request('GET /repos/ishitachawla/Requirement-testing/branches/{branch}/protection/required_pull_request_reviews',{
+    const result = await octokit.request('GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews',{
     repo: repository,
+    owner: ownername,
     branch: 'main',
     headers : { Authorization: 'Bearer ' + secret_token
                    
