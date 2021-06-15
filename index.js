@@ -5,7 +5,7 @@ const filePath = core.getInput('path')
 const { request } = require('@octokit/request');
 const { Octokit } = require("@octokit/core");
 fs.readdir('./', (err, files) => {
-  console.log("entered");
+
   if (err)
     console.log(err);
   else {
@@ -46,72 +46,22 @@ fs.readdir('./', (err, files) => {
         console.log("code owners file absent");
     })
 
-      //dont have node modules in master for .ts
-    fs.readdir('./src',(err, filess ) => {
-      const isdotts = filess.includes('*.ts');
-      if(isdotts){
-        console.log("dot ts");
-        fs.readdir('./', (err, files) => {
-          const includesnm = files.includes('node_modules');
-          if(includesnm)
-            console.log("nm present error");
-          else
-            console.log("nm absent");
-        })
-      }
-      else
-        console.log("not .ts");
-    })
-
-    //check commit protection in branch
-
-  //   async function start() {
-  //     console.log("check commit entered");
-  //     var secret_token = core.getInput('GITHUB_TOKEN');
-  //     const octokit = new Octokit({
-  //     auth: secret_token,
-  //      });
-  //     const promise = new Promise((resolve, reject) => {
-  //     octokit.request('GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews', {
-  //     owner: 'ishitachawla',
-  //     repo: 'Requirement-testing',
-  //     branch: 'main',
-  //      headers : { Authorization: 'Bearer ' + secret_token
-                   
-  //       }
-
-  //      })
-    
-  //      .catch((reject) => {
-  //       console.log('handle error here: ', reject.message)
-  //    })
-  //   console.log(promise);
-  // })
-  //   }
-  // start();
-  
+  //check brnch protection
     async function start(){ 
-      console.log("entered start");
     try{
     var secret_token = core.getInput('GITHUB_TOKEN');
     const octokit = new Octokit({
       auth: secret_token,
     });
-    if(  secret_token === "")
-    {console.log("blank value");}
-      else
-      {console.log("non blank" + secret_token);}
-   
-      const result = await octokit.request('GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews',{
-       owner: 'ishitachawla',
-       repo: 'Requirement-testing',
-       branch: 'main',
-       headers : { Authorization: 'Bearer ' + secret_token
+    const repository = core.getInput('repository');
+    const result = await octokit.request('GET /repos/{repo}/branches/{branch}/protection/required_pull_request_reviews',{
+    repo: repository,
+    branch: 'main',
+    headers : { Authorization: 'Bearer ' + secret_token
                    
        }
     }); 
     console.log(result);
-    console.log("yo");
     return result;
 }
     catch(err){
