@@ -55,7 +55,7 @@ fs.readdir('./', (err, files) => {
     });
     const repository = core.getInput('repository');
     console.log(repository);
-    const result = await octokit.request('GET /repos/{repo}/branches/{branch}/protection/required_pull_request_reviews',{
+    const result = await octokit.request('GET /repos/ishitachawla/Requirement-testing/branches/{branch}/protection/required_pull_request_reviews',{
     repo: repository,
     branch: 'main',
     headers : { Authorization: 'Bearer ' + secret_token
