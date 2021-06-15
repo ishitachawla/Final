@@ -9,8 +9,6 @@ fs.readdir('./', (err, files) => {
   if (err)
     console.log(err);
   else {
-    for(let i = 0; i < files.length; i++)
-      console.log(files[i]);
     const includesReadme = files.includes('README.md');
 
     if(includesReadme){
@@ -56,7 +54,6 @@ fs.readdir('./', (err, files) => {
     const repository = core.getInput('repo_name');
     const ownername = core.getInput('repo_owner');
     const branchname = core.getInput('repo_branch');
-    console.log(repository);
     const result = await octokit.request('GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews',{
     repo: repository,
     owner: ownername,
