@@ -6,15 +6,12 @@ branding:
 inputs:
   repo_name:
     description: "Your GitHub repository"
-    default: "Check-Requirements"
     required: true
   repo_owner:
     description: "owner"
-    default: "ishitachawla"
     required: true
   repo_branch:
     description: "Branch"
-    default: "master"
     required: true
   GITHUB_TOKEN:
     description: 'Github Personal Access Token'
