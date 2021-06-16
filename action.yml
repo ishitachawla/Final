@@ -1,4 +1,4 @@
-name: 'File Existence and Reader'
+name: 'Action Validation Checks'
 description: 'Check existence and read'
 branding:
   icon: 'file-text'
