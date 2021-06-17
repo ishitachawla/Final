@@ -4,110 +4,107 @@ import * as fs from 'fs';
 import { request } from '@octokit/request';
 import { Octokit } from "@octokit/core";
 fs.readdir('./', (err, files) => {
-  console.log("entered");
   if (err)
     console.log(err);
   else {
 
-    //readme checks
+    //Check for example and Contribution in README
     readmeChecks(files);
 
-    //code owners in .github
+    //Check for CODEOWNERS file in .github folder
     codeownerCheck();
 
-    //dont have node modules in master for .ts
+    //Check if nodemodules folder is present in master branch for typescript action
     nodemodulesCheck();
 
-    //check pr protection in branch
+    //check for branch permissionsS
     start();
     
-    }})
-
-    function getExtension(filename: string) {
-      return filename.substring(filename.lastIndexOf('.')+1, filename.length)   
     }
+  })
 
-    function readmeChecks(files: string[]){
+function getExtension(filename: string) {
+  return filename.substring(filename.lastIndexOf('.')+1, filename.length)   
+}
 
-      const includesReadme = files.includes('README.md');
-      if(includesReadme){
-        console.log("Found readme");
-        fs.readFile('./README.md', function (err, data) {
-        //check example
-        if(data.includes('Example'))
-          console.log("found example");
-        else
-          console.log("Example not found");
+function readmeChecks(files: string[]){
+
+  const includesReadme = files.includes('README.md');
+  if(includesReadme){
+    console.log("README file is present");
+    fs.readFile('./README.md', function (err, data) {
+    //check example
+    if(data.includes('Example'))
+      console.log("Example workflow is present in README");
+    else
+      console.log("Please add Example workflow in README");
                 
       //check contribution
-        if(data.includes('Contribution'))
-          console.log("found contribution");
+    if(data.includes('Contribution'))
+      console.log("Contribution is present in README");
                  
-        else
-          console.log("Contribution not found");
-      });
-      }
-      else
-      console.log("No Readme");
-    }
+    else
+      console.log("Please add Contribution in README");
+    });
+  }
+  else
+    console.log("Please add README file");
+}
 
-    function codeownerCheck(){
-      fs.readdir('./.github', (err, files) => {
-        const includesCodeOwners = files.includes('CODEOWNERS');
-        if(includesCodeOwners)
-          console.log("Code owners present");
-        else
-          console.log("code owners file absent");
-      })
-    }
+function codeownerCheck(){
+  fs.readdir('./.github', (err, files) => {
+    const includesCodeOwners = files.includes('CODEOWNERS');
+    if(includesCodeOwners)
+      console.log("CODEOWNERS file is present");
+    else
+      console.log("Please add CODEOWNERS file");
+  })
+}
 
-    function nodemodulesCheck(){
-      var flag=0;
-    fs.readdir('./src',(err, filess ) => {
-      for(let i = 0; i < filess.length; i++){
-        if(getExtension(filess[i]) === "ts"){
-          flag=1;
-          fs.readdir('./', (err, files) => {
-            const includesnm = files.includes('node_modules');
-            if(includesnm)
-              console.log("node_modules present in master");
-            else
-              console.log("node_modules not present in master");
+function nodemodulesCheck(){
+  var flag=0;
+  fs.readdir('./src',(err, filelist ) => {
+  for(let i = 0; i < filelist.length; i++){
+    if(getExtension(filelist[i]) === "ts"){
+      flag=1;
+      fs.readdir('./', (err, files) => {
+        const includes_nodemodules = files.includes('node_modules');
+        if(includes_nodemodules)
+          console.log("Please remove node_modules folder from master");
+        else
+          console.log("node_modules folder is not present in master");
           })
-          break;
-        }
+      break;
       }
-      if(flag===0)
-        console.log("not dot ts");
-    })
     }
+  })
+}
 
 
-    async function start(){ 
-        try{
-        var secret_token = core.getInput('GITHUB_TOKEN');
-        const octokit = new Octokit({
-          auth: secret_token,
-        });
-        const repository = core.getInput('repo_name');
-        const ownername = core.getInput('repo_owner');
-        const branchname = core.getInput('repo_branch');
-        const result = await octokit.request('GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews',{
-        repo: repository,
-        owner: ownername,
-        branch: branchname,
-        headers : { Authorization: 'Bearer ' + secret_token
-                       
+async function start(){ 
+  try{
+    var secret_token = core.getInput('GITHUB_TOKEN');
+    const octokit = new Octokit({
+    auth: secret_token,
+    });
+    const repository = core.getInput('repo_name');
+    const ownername = core.getInput('repo_owner');
+    const branchname = core.getInput('repo_branch');
+    const result = await octokit.request('GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews',{
+      repo: repository,
+      owner: ownername,
+      branch: branchname,
+      headers : { Authorization: 'Bearer ' + secret_token
            }
-        }); 
-        console.log(result);
-        return result;
+    }); 
+    console.log(result);
+    return result;
     }
-        catch(err){
-          console.log(err);
-          return "error";
-    }
+  catch(err){
+    console.log(err);
+    return "error";
+  }
         
-          }
+}
 
     
