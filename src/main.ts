@@ -37,18 +37,18 @@ function readmeChecks(files: string[]){
     if(data.includes('Example'))
       console.log("Example workflow is present in README");
     else
-      console.log("Please add Example workflow in README");
+      core.setFailed("Please add Example workflow in README");
                 
       //check contribution
     if(data.includes('Contribution'))
       console.log("Contribution is present in README");
                  
     else
-      console.log("Please add Contribution in README");
+      core.setFailed("Please add Contribution in README");
     });
   }
   else
-    console.log("Please add README file");
+    core.setFailed("Please add README file");
 }
 
 function codeownerCheck(){
@@ -57,7 +57,7 @@ function codeownerCheck(){
     if(includesCodeOwners)
       console.log("CODEOWNERS file is present");
     else
-      console.log("Please add CODEOWNERS file");
+      core.setFailed("Please add CODEOWNERS file");
   })
 }
 
@@ -70,7 +70,7 @@ function nodemodulesCheck(){
       fs.readdir('./', (err, files) => {
         const includes_nodemodules = files.includes('node_modules');
         if(includes_nodemodules)
-          console.log("Please remove node_modules folder from master");
+          core.setFailed("Please remove node_modules folder from master");
         else
           console.log("node_modules folder is not present in master");
           })
@@ -97,9 +97,14 @@ async function start(){
       headers : { Authorization: 'Bearer ' + secret_token
            }
     }); 
-    console.log(result);
-    return result;
+    if(result.data.dismiss_stale_reviews===false)
+      core.setFailed("Please enable Dismiss stale pull request approvals when new commits are pushed")
+    if(result.data.require_code_owner_reviews===false)
+      core.setFailed("Please enable Require review from Code Owners")
+    if(result.data.dismiss_stale_reviews===true && result.data.require_code_owner_reviews===true)
+      console.log("Require pull request reviews before merging is enabled");
     }
+    
   catch(err){
     console.log(err);
     return "error";
