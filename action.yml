@@ -1,4 +1,4 @@
-name: 'File Existence and Reader'
+name: 'Action Validation Checks'
 description: 'Check existence and read'
 branding:
   icon: 'file-text'
@@ -6,11 +6,9 @@ branding:
 inputs:
   repo_name:
     description: "Your GitHub repository"
-    default: "Check-Requirements"
     required: true
   repo_owner:
     description: "owner"
-    default: "ishitachawla"
     required: true
   GITHUB_TOKEN:
     description: 'Github Personal Access Token'
