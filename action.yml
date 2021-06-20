@@ -12,10 +12,6 @@ inputs:
     description: "owner"
     default: "ishitachawla"
     required: true
-  repo_branch:
-    description: "Branch"
-    default: "master"
-    required: true
   GITHUB_TOKEN:
     description: 'Github Personal Access Token'
     required: true

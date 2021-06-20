@@ -20,7 +20,7 @@ fs.readdir('./', (err, files) => {
     //check for branch permissions in main
     start('main');
 
-    //check for branch permissions and nodemodules folder in releases/*
+    //check for nodemodules folder in releases/*
     releasesfunc();
     
     }
