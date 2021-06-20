@@ -130,8 +130,6 @@ async function releasesfunc(){
   for(let i=0;i<result.data.length;i++){
     if(result.data[i].name.substring(0,9)==='releases/'){
       var branchname = result.data[i].name;
-      console.log(branchname);
-      start(branchname);
     }
   }
   
