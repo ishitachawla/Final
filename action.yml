@@ -10,9 +10,6 @@ inputs:
   repo_owner:
     description: "owner"
     required: true
-  repo_branch:
-    description: "Branch"
-    required: true
   GITHUB_TOKEN:
     description: 'Github Personal Access Token'
     required: true

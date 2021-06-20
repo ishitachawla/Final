@@ -17,8 +17,11 @@ fs.readdir('./', (err, files) => {
     //Check if nodemodules folder is present in master branch for typescript action
     nodemodulesCheck();
 
-    //check for branch permissionsS
-    start();
+    //check for branch permissions in main
+    start('main');
+
+    //check for nodemodules folder in releases/*
+    releasesfunc();
     
     }
   })
@@ -62,11 +65,9 @@ function codeownerCheck(){
 }
 
 function nodemodulesCheck(){
-  var flag=0;
   fs.readdir('./src',(err, filelist ) => {
   for(let i = 0; i < filelist.length; i++){
     if(getExtension(filelist[i]) === "ts"){
-      flag=1;
       fs.readdir('./', (err, files) => {
         const includes_nodemodules = files.includes('node_modules');
         if(includes_nodemodules)
@@ -81,7 +82,7 @@ function nodemodulesCheck(){
 }
 
 
-async function start(){ 
+async function start(branchname: string){ 
   try{
     var secret_token = core.getInput('GITHUB_TOKEN');
     const octokit = new Octokit({
@@ -89,7 +90,6 @@ async function start(){
     });
     const repository = core.getInput('repo_name');
     const ownername = core.getInput('repo_owner');
-    const branchname = core.getInput('repo_branch');
     const result = await octokit.request('GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews',{
       repo: repository,
       owner: ownername,
@@ -98,11 +98,11 @@ async function start(){
            }
     }); 
     if(result.data.dismiss_stale_reviews===false)
-      core.setFailed("Please enable Dismiss stale pull request approvals when new commits are pushed")
+      core.setFailed("Please enable Dismiss stale pull request approvals when new commits are pushed for "+branchname)
     if(result.data.require_code_owner_reviews===false)
-      core.setFailed("Please enable Require review from Code Owners")
+      core.setFailed("Please enable Require review from Code Owners for "+branchname)
     if(result.data.dismiss_stale_reviews===true && result.data.require_code_owner_reviews===true)
-      console.log("Require pull request reviews before merging is enabled");
+      console.log("Require pull request reviews before merging is enabled for "+branchname);
     }
     
   catch(err){
@@ -111,5 +111,51 @@ async function start(){
   }
         
 }
+
+async function releasesfunc(){ 
+  try{
+  var secret_token = core.getInput('GITHUB_TOKEN');
+  const octokit = new Octokit({
+  auth: secret_token,
+  });
+  const repository = core.getInput('repo_name');
+  const ownername = core.getInput('repo_owner');
+  const result = await octokit.request('GET /repos/{owner}/{repo}/branches',{
+  owner: ownername,
+  repo: repository,
+  headers : { Authorization: 'Bearer ' + secret_token
+                 
+     }
+  });
+  for(let i=0;i<result.data.length;i++){
+    if(result.data[i].name.substring(0,9)==='releases/'){
+      var branchname = result.data[i].name;
+      const node = await octokit.request('GET /repos/{owner}/{repo}/contents',{
+        owner: ownername,
+        repo: repository,
+        ref: branchname,
+        headers : { Authorization: 'Bearer ' + secret_token
+          }
+    })
+    var flag=0;
+    for(let j=0;j<node.data.length;j++){
+      if(node.data[j].name === 'node_modules'){
+        flag=1;
+        console.log("node_modules folder is present in "+branchname);
+      } 
+    }
+    if(flag===0)
+      core.setFailed("Please add node_modules to "+branchname);
+  }
+  
+  }
+}
+  catch(err){
+    console.log(err);
+    return "error";
+  }       
+}
+
+
 
     
