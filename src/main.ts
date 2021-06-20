@@ -130,6 +130,13 @@ async function releasesfunc(){
   for(let i=0;i<result.data.length;i++){
     if(result.data[i].name.substring(0,9)==='releases/'){
       var branchname = result.data[i].name;
+      fs.readdir('./tree/'+branchname, (err, files) => {
+        const includes_nodemodules = files.includes('node_modules');
+        if(includes_nodemodules)
+          core.setFailed("Please remove node_modules folder from release");
+        else
+          console.log("node_modules folder is not present in release");
+          })
     }
   }
   
