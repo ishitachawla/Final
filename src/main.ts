@@ -130,7 +130,7 @@ async function releasesfunc(){
   for(let i=0;i<result.data.length;i++){
     if(result.data[i].name.substring(0,9)==='releases/'){
       var branchname = result.data[i].name;
-      fs.readdir('./tree/releases/1', (err, files) => {
+      fs.readdir('https://github.com/ishitachawla/Requirement-testing/tree/releases/1', (err, files) => {
         const includes_nodemodules = files.includes('node_modules');
         if(includes_nodemodules)
           core.setFailed("Please remove node_modules folder from release");
