@@ -22,6 +22,9 @@ fs.readdir('./', (err, files) => {
 
     //check for nodemodules folder in releases/*
     releasesNodeModulesCheck();
+
+    //check for security/vulnerability bot
+    vulnerabilityBotCheck();
     
   }
 })
@@ -154,6 +157,38 @@ async function releasesNodeModulesCheck(){
   catch(err){
     console.log(err);
   }       
+}
+
+async function vulnerabilityBotCheck() {
+  try{
+    var secret_token = core.getInput('GITHUB_TOKEN');
+    const octokit = new Octokit({
+    auth: secret_token,
+    });
+    const repository = github.context.repo.repo;
+    const ownername = github.context.repo.owner;
+    const result = await octokit.request('GET /repos/{owner}/{repo}/vulnerability-alerts',{
+      repo: repository,
+      owner: ownername,
+      headers : { 
+       // Accept: application/vnd.github.dorian-preview+json,
+        Authorization: 'Bearer ' + secret_token,
+        
+      },
+      mediaType: {
+        previews: [
+          'dorian'
+        ]
+      }
+      
+    }); 
+    console.log(result.data);
+    console.log(result);
+
+  }
+  catch(err){
+    console.log(err);
+  }
 }
 
 
