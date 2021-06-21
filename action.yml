@@ -4,12 +4,6 @@ branding:
   icon: 'file-text'
   color: 'blue'
 inputs:
-  repo_name:
-    description: "Your GitHub repository"
-    required: true
-  repo_owner:
-    description: "owner"
-    required: true
   GITHUB_TOKEN:
     description: 'Github Personal Access Token'
     required: true
