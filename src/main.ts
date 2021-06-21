@@ -88,8 +88,8 @@ async function start(branchname: string){
     const octokit = new Octokit({
     auth: secret_token,
     });
-    const repository = core.getInput('repo_name');
-    const ownername = core.getInput('repo_owner');
+    const repository = github.context.repo.repo;
+    const ownername = github.context.repo.owner;
     const result = await octokit.request('GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews',{
       repo: repository,
       owner: ownername,
@@ -118,8 +118,8 @@ async function releasesfunc(){
   const octokit = new Octokit({
   auth: secret_token,
   });
-  const repository = core.getInput('repo_name');
-  const ownername = core.getInput('repo_owner');
+  const repository = github.context.repo.repo;
+  const ownername = github.context.repo.owner;
   const result = await octokit.request('GET /repos/{owner}/{repo}/branches',{
   owner: ownername,
   repo: repository,
