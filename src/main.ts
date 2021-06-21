@@ -182,9 +182,12 @@ async function vulnerabilityBotCheck() {
       }
       
     }); 
-    console.log(result.data);
-    console.log(result);
-
+    if(result.data==='undefined'){
+      console.log("Vulnerability bot has been enabled");
+    }
+    else{
+      core.setFailed("Please enable vulnerability bot");
+    }
   }
   catch(err){
     console.log(err);
