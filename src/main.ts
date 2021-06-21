@@ -28,8 +28,6 @@ async function main() {
       releaseBranches(repository, ownername, secret_token, octokit);
       //check for nodemodules folder in releases/*
       releasesNodeModulesCheck(repository, ownername, secret_token, octokit);
-      //check for security/vulnerability bot
-      vulnerabilityBotCheck(repository, ownername, secret_token, octokit);
     }
   })
 }
@@ -169,31 +167,5 @@ async function releasesNodeModulesCheck(repository: string, ownername: string, s
   catch(err){
     console.log(err);
   }       
-}
-
-async function vulnerabilityBotCheck(repository: string, ownername: string, secret_token: string, octokit: Octokit) {
-  try{
-    const result = await octokit.request('GET /repos/{owner}/{repo}/vulnerability-alerts',{
-      repo: repository,
-      owner: ownername,
-      headers : { 
-        Authorization: 'Bearer ' + secret_token,
-      },
-      mediaType: {
-        previews: [
-          'dorian'
-        ]
-      }
-    }); 
-    if(result.data === 'undefined'){
-      console.log('Vulnerability bot is enabled');
-    }
-    else{
-      core.setFailed('Please enable vulnerability bot');
-    }
-  }
-  catch(err){
-    console.log(err);
-  }
 }
 main();
