@@ -171,19 +171,16 @@ async function vulnerabilityBotCheck() {
       repo: repository,
       owner: ownername,
       headers : { 
-       // Accept: application/vnd.github.dorian-preview+json,
         Authorization: 'Bearer ' + secret_token,
-        
       },
       mediaType: {
         previews: [
           'dorian'
         ]
       }
-      
     }); 
     if(result.data==='undefined'){
-      console.log("Vulnerability bot has been enabled");
+      console.log("Vulnerability bot is enabled");
     }
     else{
       core.setFailed("Please enable vulnerability bot");
