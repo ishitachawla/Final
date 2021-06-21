@@ -129,7 +129,7 @@ async function releaseBranches(repository: string, ownername: string, secret_tok
     }
   }
   catch(err){
-
+    console.log(err);
   }
 }
 
