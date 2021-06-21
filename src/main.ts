@@ -111,7 +111,7 @@ async function branchPermissionCheck(branchname: string, repository: string, own
     }
   } 
   catch(err){
-    console.log(err);
+    //console.log(err);
   }        
 }
 
