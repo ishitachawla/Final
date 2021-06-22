@@ -223,6 +223,9 @@ function issueTemplateCheck() {
             });
         }
       }
+      if(flag==0){
+        core.setFailed("Please set default label as need-to-triage")
+      }
       })
     }
 }
