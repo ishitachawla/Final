@@ -210,7 +210,7 @@ async function issueTemplateCheck(repository: string, ownername: string, secret_
       flag=1;
     }
   })
-  if(flag===1){
+  if(flag===0){
     fs.readdir('./.github/ISSUE_TEMPLATE',(err, filelist ) => {
       flag=0;
       for(let i = 0; i < filelist.length; i++){
