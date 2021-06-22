@@ -29,7 +29,11 @@ async function main() {
       //check for security/vulnerability bot
       vulnerabilityBotCheck(repository, ownername, secret_token, octokit);
       //1. check whether issue-template has been set up and 2. default label is need-to-triage
-      issueTemplateCheck();
+      let a= issueTemplateCheck();
+      if(a){
+        let b= check();
+        console.log(b);
+      }
     }
   })
 }
@@ -199,34 +203,40 @@ async function vulnerabilityBotCheck(repository: string, ownername: string, secr
 }
 
 function issueTemplateCheck() {
-  let flag=0;
   fs.readdir('./.github',(err, folders ) => {
     const includesISSUE_TEMPLATE = folders.includes('ISSUE_TEMPLATE');
     if(includesISSUE_TEMPLATE){
       console.log('ISSUE_TEMPLATE is set up');
+      return true;
     }
     else{
       core.setFailed('Please set up ISSUE_TEMPLATE');
-      flag=1;
+      return false;
     }
   })
-  if(flag==0){
-    fs.readdir('./.github/ISSUE_TEMPLATE',(err, filelist ) => {
-      for(let i = 0; i < filelist.length; i++){
-        if(getExtension(filelist[i]) === 'md'){
-          fs.readFile('./.github/ISSUE_TEMPLATE/'+filelist[i], function (err, data) {
-            if(data.includes('need-to-triage')){
-              console.log('Default label is need-to-triage');
-              flag=1;
-              return;
-            }
-            });
-        }
+  return false;
+}
+
+function check(){
+  let flag=0;
+  fs.readdir('./.github/ISSUE_TEMPLATE',(err, filelist ) => {
+    let i=0;
+    while( i < filelist.length ){
+      if(getExtension(filelist[i]) === 'md'){
+        fs.readFile('./.github/ISSUE_TEMPLATE/'+filelist[i], function (err, data) {
+          if(data.includes('need-to-triage')){
+            console.log('Default label is need-to-triage');
+            return true;
+          }
+        });
       }
-      if(flag==0){
-        core.setFailed("Please set default label as need-to-triage")
-      }
-      })
+      i++;
     }
+    if(i==filelist.length){
+      console.log('not need-to-triage');
+      return false;
+    }
+  })
+  return false;
 }
 main();
