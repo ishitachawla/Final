@@ -210,7 +210,7 @@ async function issueTemplateCheck(repository: string, ownername: string, secret_
       flag=1;
     }
   })
-  if(flag===0){
+  if(flag==0){
     fs.readdir('./.github/ISSUE_TEMPLATE',(err, filelist ) => {
       for(let i = 0; i < filelist.length; i++){
         if(getExtension(filelist[i]) === 'md'){
@@ -221,12 +221,12 @@ async function issueTemplateCheck(repository: string, ownername: string, secret_
             }
             });
         }
-        if(flag===1){
+        if(flag==1){
           console.log('yo');
           break;
         }
       }
-      if(flag===0){
+      if(flag==0){
         core.setFailed('Please set default label as need-to-triage');
       }
       })
