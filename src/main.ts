@@ -203,7 +203,7 @@ function issueTemplateCheck() {
     const includesISSUE_TEMPLATE = folders.includes('ISSUE_TEMPLATE');
     if(includesISSUE_TEMPLATE){
       console.log('ISSUE_TEMPLATE is set up');
-      check();
+      defaultLabelCheck();
     }
     else{
       core.setFailed('Please set up ISSUE_TEMPLATE');
@@ -211,7 +211,7 @@ function issueTemplateCheck() {
   })
 }
 
-function check(){
+function defaultLabelCheck(){
   fs.readdir('./.github/ISSUE_TEMPLATE',(err, filelist ) => {
     let i=0;
     while( i < filelist.length ){
@@ -225,7 +225,7 @@ function check(){
       i++;
     }
     if(i==filelist.length)
-      core.setFailed('pls det label default')
+      core.setFailed('Please set default label as need-to-triage')
   })
 }
 main();
