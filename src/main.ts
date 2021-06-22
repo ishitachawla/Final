@@ -28,6 +28,8 @@ async function main() {
       releasesNodeModulesCheck(repository, ownername, secret_token, octokit);
       //check for security/vulnerability bot
       vulnerabilityBotCheck(repository, ownername, secret_token, octokit);
+      //1. check whether issue-template has been set up and 2. default label is need-to-triage
+      issueTemplateCheck(repository, ownername, secret_token, octokit);
     }
   })
 }
@@ -194,5 +196,37 @@ async function vulnerabilityBotCheck(repository: string, ownername: string, secr
   catch(err){
     console.log(err);
   }
+}
+
+async function issueTemplateCheck(repository: string, ownername: string, secret_token: string, octokit: Octokit) {
+  var flag=0;
+  fs.readdir('./github',(err, folders ) => {
+    const includesISSUE_TEMPLATE = folders.includes('ISSUE_TEMPLATE');
+    if(includesISSUE_TEMPLATE){
+      console.log('ISSUE_TEMPLATE is set up');
+    }
+    else{
+      core.setFailed('Please set up ISSUE_TEMPLATE');
+      flag=1;
+    }
+  })
+  if(flag===1){
+    fs.readdir('./github/ISSUE_TEMPLATE',(err, filelist ) => {
+      flag=0;
+      for(let i = 0; i < filelist.length; i++){
+        if(getExtension(filelist[i]) === 'md'){
+          fs.readFile(filelist[i], function (err, data) {
+            if(data.includes('need-to-triage')){
+              console.log('Default label is need-to-triage');
+              flag=1;
+            }
+            });
+        }
+      }
+      if(flag===0){
+        core.setFailed('Please set default label as need-to-triage');
+      }
+      })
+    }
 }
 main();
