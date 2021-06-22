@@ -199,7 +199,7 @@ async function vulnerabilityBotCheck(repository: string, ownername: string, secr
 }
 
 async function issueTemplateCheck(repository: string, ownername: string, secret_token: string, octokit: Octokit) {
-  var flag=0;
+  let flag=0;
   fs.readdir('./.github',(err, folders ) => {
     const includesISSUE_TEMPLATE = folders.includes('ISSUE_TEMPLATE');
     if(includesISSUE_TEMPLATE){
@@ -218,12 +218,9 @@ async function issueTemplateCheck(repository: string, ownername: string, secret_
             if(data.includes('need-to-triage')){
               console.log('Default label is need-to-triage');
               flag=1;
+              console.log('flag is'+ flag)
             }
             });
-        }
-        if(flag==1){
-          console.log('yo');
-          break;
         }
       }
       if(flag==0){
