@@ -30,6 +30,7 @@ async function main() {
       vulnerabilityBotCheck(repository, ownername, secret_token, octokit);
       //1. check whether issue-template has been set up and 2. default label is need-to-triage
       let a= issueTemplateCheck();
+      console.log('a is' + a);
       if(a){
         let b= check();
         console.log(b);
