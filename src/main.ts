@@ -200,7 +200,7 @@ async function vulnerabilityBotCheck(repository: string, ownername: string, secr
 
 async function issueTemplateCheck(repository: string, ownername: string, secret_token: string, octokit: Octokit) {
   var flag=0;
-  fs.readdir('./github',(err, folders ) => {
+  fs.readdir('./.github',(err, folders ) => {
     const includesISSUE_TEMPLATE = folders.includes('ISSUE_TEMPLATE');
     if(includesISSUE_TEMPLATE){
       console.log('ISSUE_TEMPLATE is set up');
@@ -211,7 +211,7 @@ async function issueTemplateCheck(repository: string, ownername: string, secret_
     }
   })
   if(flag===1){
-    fs.readdir('./github/ISSUE_TEMPLATE',(err, filelist ) => {
+    fs.readdir('./.github/ISSUE_TEMPLATE',(err, filelist ) => {
       flag=0;
       for(let i = 0; i < filelist.length; i++){
         if(getExtension(filelist[i]) === 'md'){
