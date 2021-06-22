@@ -212,16 +212,18 @@ async function issueTemplateCheck(repository: string, ownername: string, secret_
   })
   if(flag===0){
     fs.readdir('./.github/ISSUE_TEMPLATE',(err, filelist ) => {
-      flag=0;
       for(let i = 0; i < filelist.length; i++){
         if(getExtension(filelist[i]) === 'md'){
           fs.readFile('./.github/ISSUE_TEMPLATE/'+filelist[i], function (err, data) {
-            console.log('hello');
             if(data.includes('need-to-triage')){
               console.log('Default label is need-to-triage');
               flag=1;
             }
             });
+        }
+        if(flag===1){
+          console.log('yo');
+          break;
         }
       }
       if(flag===0){
