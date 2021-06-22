@@ -22,10 +22,8 @@ async function main() {
       codeOwnerCheck();
       //Check if nodemodules folder is present in master branch for typescript action
       nodeModulesCheck();
-      //check for branch permissions in main
-      branchPermissionCheck('main', repository, ownername, secret_token, octokit);
-      //check for branch permissions in releases/*
-      releasesPermissionCheck(repository, ownername, secret_token, octokit);
+      //check for branch permissions in main/master and releases/*
+      branchPermissionCheck(repository, ownername, secret_token, octokit);
       //check for nodemodules folder in releases/*
       releasesNodeModulesCheck(repository, ownername, secret_token, octokit);
     }
@@ -92,7 +90,7 @@ function nodeModulesCheck(){
   })
 }
 
-async function branchPermissionCheck(branchname: string, repository: string, ownername: string, secret_token: string, octokit: Octokit){ 
+async function branchPermissionCheckHelper(branchname: string, repository: string, ownername: string, secret_token: string, octokit: Octokit){ 
   try{
     const result = await octokit.request('GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews',{
       repo: repository,
@@ -113,7 +111,7 @@ async function branchPermissionCheck(branchname: string, repository: string, own
   }        
 }
 
-async function releasesPermissionCheck(repository: string, ownername: string, secret_token: string, octokit: Octokit){
+async function branchPermissionCheck(repository: string, ownername: string, secret_token: string, octokit: Octokit){
   try{
     const result = await octokit.request('GET /repos/{owner}/{repo}/branches',{
       owner: ownername,
@@ -122,9 +120,9 @@ async function releasesPermissionCheck(repository: string, ownername: string, se
       }
     });
     for(let i=0;i<result.data.length;i++){
-      if(result.data[i].name.substring(0,9) === 'releases/'){
+      if(result.data[i].name.substring(0,9) === 'releases/' || result.data[i].name === 'main' || result.data[i].name === 'master' ){
         var branchname = result.data[i].name;
-        branchPermissionCheck(branchname, repository, ownername, secret_token, octokit);
+        branchPermissionCheckHelper(branchname, repository, ownername, secret_token, octokit);
       }
     }
   }
