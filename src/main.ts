@@ -218,15 +218,15 @@ async function issueTemplateCheck(repository: string, ownername: string, secret_
             if(data.includes('need-to-triage')){
               console.log('Default label is need-to-triage');
               flag=1;
-              console.log('flag is'+ flag)
+              return;
             }
             });
         }
       }
-      if(flag==0){
-        core.setFailed('Please set default label as need-to-triage');
-      }
       })
+    }
+    if(flag==0){
+      core.setFailed('Please set default label as need-to-triage');
     }
 }
 main();
