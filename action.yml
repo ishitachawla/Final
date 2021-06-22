@@ -1,5 +1,5 @@
 name: 'Action Validation Checks'
-description: 'Check existence and read'
+author: 'ishitachawla'
 branding:
   icon: 'file-text'
   color: 'blue'
