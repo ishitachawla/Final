@@ -216,6 +216,7 @@ async function issueTemplateCheck(repository: string, ownername: string, secret_
       for(let i = 0; i < filelist.length; i++){
         if(getExtension(filelist[i]) === 'md'){
           fs.readFile('./.github/ISSUE_TEMPLATE/'+filelist[i], function (err, data) {
+            console.log('hello');
             if(data.includes('need-to-triage')){
               console.log('Default label is need-to-triage');
               flag=1;
