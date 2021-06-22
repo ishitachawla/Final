@@ -24,8 +24,8 @@ async function main() {
       nodeModulesCheck();
       //check for branch permissions in main
       branchPermissionCheck('main', repository, ownername, secret_token, octokit);
-      //function to get all releases/* branches 
-      releaseBranches(repository, ownername, secret_token, octokit);
+      //check for branch permissions in releases/*
+      releasesPermissionCheck(repository, ownername, secret_token, octokit);
       //check for nodemodules folder in releases/*
       releasesNodeModulesCheck(repository, ownername, secret_token, octokit);
       //check for security/vulnerability bot
@@ -115,7 +115,7 @@ async function branchPermissionCheck(branchname: string, repository: string, own
   }        
 }
 
-async function releaseBranches(repository: string, ownername: string, secret_token: string, octokit: Octokit){
+async function releasesPermissionCheck(repository: string, ownername: string, secret_token: string, octokit: Octokit){
   try{
     const result = await octokit.request('GET /repos/{owner}/{repo}/branches',{
       owner: ownername,
