@@ -29,6 +29,7 @@ async function main() {
     }
   })
 }
+
 function readmeChecks(files: string[]){
   const includesReadme = files.includes('README.md');
   if(includesReadme){
