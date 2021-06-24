@@ -260,9 +260,9 @@ async function standardLabelsCheck(repository: string, ownername: string, secret
       console.log('Standard labels are present')
     }
     else{
-      let errorOutput = '';
-      for(let i=0; i<absentLabels.length; i++){
-        errorOutput = errorOutput + absentLabels[i] + ', ';
+      let errorOutput = absentLabels[0];
+      for(let i=1; i<absentLabels.length; i++){
+        errorOutput = errorOutput + ', ' + absentLabels[i];
       }
       core.setFailed('Please add standard labels: '+ errorOutput);
     }
