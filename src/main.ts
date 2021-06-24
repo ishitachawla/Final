@@ -186,12 +186,13 @@ async function vulnerabilityBotCheck(repository: string, ownername: string, secr
         ]
       }
     }); 
-    if(result.data === 'undefined'){
-      console.log('Vulnerability bot is enabled');
-    }
-    else{
-      core.setFailed('Please enable vulnerability bot');
-    }
+    console.log(result);
+    // if(result.data === 'undefined'){
+    //   console.log('Vulnerability bot is enabled');
+    // }
+    // else{
+    //   core.setFailed('Please enable vulnerability bot');
+    // }
   }
   catch(err){
     console.log(err);
