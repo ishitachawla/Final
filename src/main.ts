@@ -194,7 +194,7 @@ async function vulnerabilityBotCheck(repository: string, ownername: string, secr
     }
   }
   catch(err){
-    console.log(err);
+    core.setFailed('Please enable vulnerability bot');
   }
 }
 
