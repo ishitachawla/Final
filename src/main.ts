@@ -262,7 +262,7 @@ async function standardLabelsCheck(repository: string, ownername: string, secret
     else{
       let errorOutput = '';
       for(let i=0; i<absentLabels.length; i++){
-        errorOutput = errorOutput + absentLabels[i];
+        errorOutput = errorOutput + absentLabels[i] + ' ';
       }
       core.setFailed('Please add standard labels '+ errorOutput);
     }
@@ -271,6 +271,7 @@ async function standardLabelsCheck(repository: string, ownername: string, secret
     core.setFailed('Please add standard labels');
   }
 }
+
 function standardLabelsCheckHelper(label: string, map: Map<string,number>, absentLabels: Array<string>){
   if(!map.has(label)){
     absentLabels.push(label);
