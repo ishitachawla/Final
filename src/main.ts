@@ -185,6 +185,7 @@ async function vulnerabilityBotCheck(repository: string, ownername: string, secr
         ]
       }
     }); 
+    console.log(result);
     if(result.data === 'undefined'){
       console.log('Vulnerability bot is enabled');
     }
