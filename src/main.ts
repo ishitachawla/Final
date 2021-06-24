@@ -26,6 +26,10 @@ async function main() {
       branchPermissionCheck(repository, ownername, secret_token, octokit);
       //check for nodemodules folder in releases/*
       releasesNodeModulesCheck(repository, ownername, secret_token, octokit);
+      //check for security/vulnerability bot
+      vulnerabilityBotCheck(repository, ownername, secret_token, octokit);
+      //1. check whether issue-template has been set up and 2. default label is need-to-triage
+      issueTemplateCheck();
     }
   })
 }
@@ -166,5 +170,61 @@ async function releasesNodeModulesCheck(repository: string, ownername: string, s
   catch(err){
     console.log(err);
   }       
+}
+async function vulnerabilityBotCheck(repository: string, ownername: string, secret_token: string, octokit: Octokit) {
+  try{
+    const result = await octokit.request('GET /repos/{owner}/{repo}/vulnerability-alerts',{
+      repo: repository,
+      owner: ownername,
+      headers : { 
+        Authorization: 'Bearer ' + secret_token,
+      },
+      mediaType: {
+        previews: [
+          'dorian'
+        ]
+      }
+    }); 
+    if(result.data === 'undefined'){
+      console.log('Vulnerability bot is enabled');
+    }
+    else{
+      core.setFailed('Please enable vulnerability bot');
+    }
+  }
+  catch(err){
+    console.log(err);
+  }
+}
+
+function issueTemplateCheck() {
+  fs.readdir('./.github',(err, folders ) => {
+    const includesISSUE_TEMPLATE = folders.includes('ISSUE_TEMPLATE');
+    if(includesISSUE_TEMPLATE){
+      console.log('ISSUE_TEMPLATE is set up');
+      defaultLabelCheck();
+    }
+    else{
+      core.setFailed('Please set up ISSUE_TEMPLATE');
+    }
+  })
+}
+
+function defaultLabelCheck(){
+  fs.readdir('./.github/ISSUE_TEMPLATE',(err, filelist ) => {
+    let i=0;
+    while( i < filelist.length ){
+      if(getExtension(filelist[i]) === 'md'){
+        let data = fs.readFileSync('./.github/ISSUE_TEMPLATE/'+filelist[i]) 
+          if(data.includes('need-to-triage')){
+            console.log('Default label is need-to-triage');
+            break;
+          }
+      }
+      i++;
+    }
+    if(i==filelist.length)
+      core.setFailed('Please set default label as need-to-triage')
+  })
 }
 main();
