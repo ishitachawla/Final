@@ -243,19 +243,15 @@ async function standardLabelsCheck(repository: string, ownername: string, secret
     var map = new Map();
     var absentLabels = new Array();
     for(let i=0; i<labelArray.length; i++){
-      map.set(labelArray[i].name , 1);
+      map.set(labelArray[i].name , true);
     }
-    standardLabelsCheckHelper('need-to-triage', map, absentLabels);
-    standardLabelsCheckHelper('idle', map, absentLabels);
-    standardLabelsCheckHelper('question', map, absentLabels);
-    standardLabelsCheckHelper('bug', map, absentLabels);
-    standardLabelsCheckHelper('P0', map, absentLabels);
-    standardLabelsCheckHelper('P1', map, absentLabels);
-    standardLabelsCheckHelper('enhancement', map, absentLabels);
-    standardLabelsCheckHelper('documentation', map, absentLabels);
-    standardLabelsCheckHelper('backlog', map, absentLabels);
-    standardLabelsCheckHelper('performance-issue', map, absentLabels);
-    standardLabelsCheckHelper('waiting-for-customer', map, absentLabels);
+    const standardLabelsArray = ['need-to-triage', 'idle', 'question', 'bug', 'P0', 'P1', 'enhancement', 'documentation', 'backlog', 'performance-issue', 'waiting-for-customer']
+    for(let i=0; i<standardLabelsArray.length; i++){
+      let label = standardLabelsArray[i];
+      if(!map.has(label)){
+        absentLabels.push(label);
+      }
+    }
     if(absentLabels.length==0){
       console.log('Standard labels are present')
     }
@@ -269,12 +265,6 @@ async function standardLabelsCheck(repository: string, ownername: string, secret
   }
   catch(err){
     core.setFailed('Please add standard labels');
-  }
-}
-
-function standardLabelsCheckHelper(label: string, map: Map<string,number>, absentLabels: Array<string>){
-  if(!map.has(label)){
-    absentLabels.push(label);
   }
 }
 
