@@ -240,10 +240,10 @@ async function standardLabelsCheck(repository: string, ownername: string, secret
       },
     }); 
     let labelArray = result.data;
-    var existingLabels = new Map();
+    var existingLabels = new Set();
     var absentLabels = new Array();
     for(let i=0; i<labelArray.length; i++){
-      existingLabels.set(labelArray[i].name , true);
+      existingLabels.add(labelArray[i].name);
     }
     const standardLabelsArray = ['need-to-triage', 'idle', 'question', 'bug', 'P0', 'P1', 'enhancement', 'documentation', 'backlog', 'performance-issue', 'waiting-for-customer']
     for(let i=0; i<standardLabelsArray.length; i++){
