@@ -30,6 +30,8 @@ async function main() {
       vulnerabilityBotCheck(repository, ownername, secret_token, octokit);
       //1. check whether issue-template has been set up and 2. default label is need-to-triage
       issueTemplateCheck();
+      //Check whether standard labels have been set up
+      standardLabelsCheck(repository, ownername, secret_token, octokit)
     }
   })
 }
@@ -227,4 +229,43 @@ function defaultLabelCheck(){
       core.setFailed('Please set default label as need-to-triage')
   })
 }
+
+async function standardLabelsCheck(repository: string, ownername: string, secret_token: string, octokit: Octokit){
+  try{
+    const result = await octokit.request('GET /repos/{owner}/{repo}/labels',{
+      repo: repository,
+      owner: ownername,
+      headers : { 
+        Authorization: 'Bearer ' + secret_token,
+      },
+    }); 
+    let labelArray = result.data;
+    var existingLabels = new Set();
+    var absentLabels = new Array();
+    for(let i=0; i<labelArray.length; i++){
+      existingLabels.add(labelArray[i].name);
+    }
+    const standardLabelsArray = ['need-to-triage', 'idle', 'question', 'bug', 'P0', 'P1', 'enhancement', 'documentation', 'backlog', 'performance-issue', 'waiting-for-customer']
+    for(let i=0; i<standardLabelsArray.length; i++){
+      let label = standardLabelsArray[i];
+      if(!existingLabels.has(label)){
+        absentLabels.push(label);
+      }
+    }
+    if(absentLabels.length==0){
+      console.log('Standard labels are present')
+    }
+    else{
+      let errorOutput = absentLabels[0];
+      for(let i=1; i<absentLabels.length; i++){
+        errorOutput = errorOutput + ', ' + absentLabels[i];
+      }
+      core.setFailed('Please add standard labels: '+ errorOutput);
+    }
+  }
+  catch(err){
+    console.log(err);
+  }
+}
+
 main();
