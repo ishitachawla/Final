@@ -3,10 +3,10 @@ import * as github from '@actions/github';
 import * as fs from 'fs';
 import { Octokit } from '@octokit/core';
 import {readmeChecks, codeOwnerCheck, nodeModulesCheck, releasesNodeModulesCheck} from './fileChecks'
-import {branchPermissionCheck} from './branchPermission'
-import {vulnerabilityBotCheck} from './vulnerabilityBot'
-import {issueTemplateCheck} from './issueTemplate'
-import {standardLabelsCheck} from './standardLabels'
+import {branchPermissionCheck} from './branchPermissionCheck'
+import {vulnerabilityBotCheck} from './vulnerabilityBotCheck'
+import {issueTemplateCheck} from './issueTemplateCheck'
+import {standardLabelsCheck} from './standardLabelsCheck'
 
 async function main() { 
   fs.readdir('./', (err, files) => {
