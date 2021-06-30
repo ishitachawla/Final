@@ -33,7 +33,6 @@ async function main() {
       issueTemplateCheck();
       //check whether standard labels have been defined
       standardLabelsCheck(repository, ownername, secret_token, octokit);
-      console.log('woohoo')
     }
   })
 }
