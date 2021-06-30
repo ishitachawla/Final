@@ -264,7 +264,7 @@ async function standardLabelsCheck(repository: string, ownername: string, secret
     }
   }
   catch(err){
-    core.setFailed('Please add standard labels');
+    console.log(err);
   }
 }
 
