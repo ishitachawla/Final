@@ -4,7 +4,9 @@
   "description": "",
   "main": "lib/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:build": "tsc -w",
+    "start:run": "nodemon lib/main.js",
+    "start": "concurrently npm:start:*"
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,9 @@
     "@actions/github": "^5.0.0"
   },
   "devDependencies": {
-    "@types/node": "^15.12.4"
+    "@types/node": "^15.12.5"
+  },
+  "directories": {
+    "lib": "lib"
   }
 }
