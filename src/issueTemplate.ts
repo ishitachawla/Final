@@ -5,7 +5,7 @@ export function issueTemplateCheck() {
     fs.readdir('./.github',(err, folders ) => {
       const includesISSUE_TEMPLATE = folders.includes('ISSUE_TEMPLATE');
       if(includesISSUE_TEMPLATE){
-        console.log('ISSUE_TEMPLATE is set up');
+        console.log('Success - ISSUE_TEMPLATE is set up');
         defaultLabelCheck();
       }
       else{
@@ -21,7 +21,7 @@ function defaultLabelCheck(){
         if(getExtension(filelist[i]) === 'md'){
           let data = fs.readFileSync('./.github/ISSUE_TEMPLATE/'+filelist[i]) 
             if(data.includes('need-to-triage')){
-              console.log('Default label is need-to-triage');
+              console.log('Success - Default label is need-to-triage');
               break;
             }
         }

@@ -34,10 +34,10 @@ async function branchPermissionCheckHelper(branchname: string, repository: strin
             core.setFailed('Please enable Require review from Code Owners for '+ branchname)
         }
         else{
-            console.log('Require pull request reviews before merging is enabled for '+ branchname);
+            console.log('Success - Require pull request reviews before merging is enabled for '+ branchname);
         }
     } 
     catch(err){
-        core.setFailed('Please enable Require review from Code Owners for '+ branchname)
+        console.log(err);
     }        
 }

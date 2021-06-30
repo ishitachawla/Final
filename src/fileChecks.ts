@@ -5,18 +5,18 @@ import { Octokit } from '@octokit/core';
 export function readmeChecks(files: string[]){
     const includesReadme = files.includes('README.md');
     if(includesReadme){
-        console.log('README file is present');
+        console.log('Success - README file is present');
         fs.readFile('./README.md', function (err, data) {
             //check example
             if(data.includes('Example')){
-                console.log('Example workflow is present in README');
+                console.log('Success - Example workflow is present in README');
             }
             else{
                 core.setFailed('Please add Example workflow in README');
             }            
             //check contribution
             if(data.includes('Contribution')){
-                console.log('Contribution is present in README');
+                console.log('Success - Contribution is present in README');
             }             
             else{
                 core.setFailed('Please add Contribution in README');
@@ -32,7 +32,7 @@ export function codeOwnerCheck(){
     fs.readdir('./.github', (err, files) => {
         const includesCodeOwners = files.includes('CODEOWNERS');
         if(includesCodeOwners){
-            console.log('CODEOWNERS file is present');
+            console.log('Success - CODEOWNERS file is present');
         }
         else{
             core.setFailed('Please add CODEOWNERS file');
@@ -54,7 +54,7 @@ export function nodeModulesCheck(){
                         core.setFailed('Please remove node_modules folder from master');
                     }
                     else{
-                        console.log('node_modules folder is not present in master');
+                        console.log('Success - node_modules folder is not present in master');
                     }
                 })
                 break;
@@ -85,7 +85,7 @@ export async function releasesNodeModulesCheck(repository: string, ownername: st
                 for(let j=0;j<branch.data.length;j++){
                     if(branch.data[j].name === 'node_modules'){
                         flag=1;
-                        console.log('node_modules folder is present in '+ branchname);
+                        console.log('Success - node_modules folder is present in '+ branchname);
                     } 
                 }
                 if(flag===0){

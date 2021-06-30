@@ -24,7 +24,7 @@ export async function standardLabelsCheck(repository: string, ownername: string,
         }
       }
       if(absentLabels.length==0){
-        console.log('Standard labels are present')
+        console.log('Success - Standard labels are present')
       }
       else{
         let errorOutput = absentLabels[0];

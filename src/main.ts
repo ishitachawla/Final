@@ -2,11 +2,11 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 import * as fs from 'fs';
 import { Octokit } from '@octokit/core';
-import {readmeChecks, codeOwnerCheck, nodeModulesCheck, releasesNodeModulesCheck} from './filechecks'
-import {branchPermissionCheck} from './branchpermission'
-import {vulnerabilityBotCheck} from './vulnerabilitybot'
-import {issueTemplateCheck} from './issuetemplate'
-import {standardLabelsCheck} from './standardlabels'
+import {readmeChecks, codeOwnerCheck, nodeModulesCheck, releasesNodeModulesCheck} from './fileChecks'
+import {branchPermissionCheck} from './branchPermission'
+import {vulnerabilityBotCheck} from './vulnerabilityBot'
+import {issueTemplateCheck} from './issueTemplate'
+import {standardLabelsCheck} from './standardLabels'
 
 async function main() { 
   fs.readdir('./', (err, files) => {
