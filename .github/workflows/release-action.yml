@@ -17,11 +17,3 @@ jobs:
         run: |
           npm install
           npm build
-      - name: Commit and push
-        run: |
-          echo "git add -f lib/"
-          git add -f lib/
-          echo "git add -f node_modules/"
-          git add -f node_modules/
-          echo "committing files"
-          git commit -m "[Automation]: Adding generated files - js files and node_modules"
