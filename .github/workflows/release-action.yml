@@ -16,7 +16,7 @@ jobs:
       - name: Build code
         run: |
           npm install
-          npm build
+          npm run-script build
       - name: Commit Files
         continue-on-error: true # commit will fail if the code wasn't changed. Prevent the build to fail in this case.
         run: |
