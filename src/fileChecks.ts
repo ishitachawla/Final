@@ -15,8 +15,8 @@ export function readmeChecks(files: string[]){
                 core.setFailed('Please add Example workflow in README');
             }            
             //check contribution
-            if(data.includes('Contribution')){
-                console.log('Success - Contribution is present in README');
+            if(data.includes('Contribution') || data.includes('Contributing')){
+                console.log('Success - Contribution Guidelines are present in README');
             }             
             else{
                 core.setFailed('Please add Contribution in README');
