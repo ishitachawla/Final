@@ -7,7 +7,7 @@ With this Action, you can check for essential [Validations for an Action reposit
 `GITHUB_TOKEN`: Personal access token of your repository. Uses your access token PAT_TOKEN.
 
 ## Output
-All required validations will be run and a success mesage or an error will be shown in the console as output.
+All required validations will be run and a success message or an error will be shown in the console as output.
 
 ## Example
 ```yml
