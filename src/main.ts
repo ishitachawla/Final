@@ -20,7 +20,7 @@ async function main() {
 	//Check for CODEOWNERS file in .github folder
 	codeOwnerCheck(repository, ownername, secret_token, octokit);
 	//Check if nodemodules folder is present in master branch for typescript action
-	nodeModulesCheck();
+	nodeModulesCheck(repository, ownername, secret_token, octokit);
 	//check for branch permissions in main/master and releases/*
 	branchPermissionCheck(repository, ownername, secret_token, octokit);
 	//check for nodemodules folder in releases/*

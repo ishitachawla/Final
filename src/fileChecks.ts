@@ -69,23 +69,26 @@ function getExtension(filename: string) {
 	return filename.substring(filename.lastIndexOf('.') + 1, filename.length)
 }
 
-export function nodeModulesCheck() {
-	fs.readdir('./src', (err, filelist) => {
-		for (let i = 0; i < filelist.length; i++) {
-			if (getExtension(filelist[i]) === 'ts') {
-				fs.readdir('./', (err, files) => {
-					const includes_node_modules = files.includes('node_modules');
-					if (includes_node_modules) {
-						core.setFailed('Please remove node_modules folder from master');
-					}
-					else {
-						console.log('Success - node_modules folder is not present in master');
-					}
-				})
-				break;
+export async function nodeModulesCheck(repository: string, ownername: string, secret_token: string, octokit: Octokit) {
+	try {
+		const result = await octokit.request('GET /repos/{owner}/{repo}/languages', {
+			repo: repository,
+			owner: ownername,
+			headers: {
+				Authorization: 'Bearer ' + secret_token
 			}
+		});
+		console.log(result.data);
+		if(result.status=200){
+			console.log('Success - CODEOWNERS file is present');
 		}
-	})
+		else{
+			core.setFailed('Please add CODEOWNERS file');
+		}
+	}
+	catch (err) {
+		console.log(err);
+	}
 }
 
 export async function releasesNodeModulesCheck(repository: string, ownername: string, secret_token: string, octokit: Octokit) {
