@@ -11,7 +11,7 @@ export async function readmeChecks(repository: string, validationResultRepo: any
 			}
 		});
 		if (result.status == 200) {
-			console.log('Success - README file is present');
+			//console.log('Success - README file is present');
 			const current = await octokit.request('GET /repos/{owner}/{repo}/contents/README.md', {
 				repo: repository,
 				owner: ownername,
