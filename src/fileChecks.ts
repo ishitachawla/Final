@@ -60,12 +60,8 @@ export async function codeOwnerCheck(repository: string, ownername: string, secr
 		}
 	}
 	catch (err) {
-		console.log(err);
+		core.setFailed('Please add CODEOWNERS file');
 	}
-}
-
-function getExtension(filename: string) {
-	return filename.substring(filename.lastIndexOf('.') + 1, filename.length)
 }
 
 export async function nodeModulesCheck(repository: string, ownername: string, secret_token: string, octokit: Octokit) {
