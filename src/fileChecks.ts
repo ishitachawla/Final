@@ -1,5 +1,4 @@
 import * as core from '@actions/core';
-import * as fs from 'fs';
 import { Octokit } from '@octokit/core';
 
 export async function readmeChecks(repository: string, ownername: string, secret_token: string, octokit: Octokit) {
@@ -39,7 +38,7 @@ export async function readmeChecks(repository: string, ownername: string, secret
 		}
 	}
 	catch (err) {
-		console.log(err);
+		core.setFailed('Please add README file')
 	}
 
 }
