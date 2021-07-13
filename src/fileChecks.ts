@@ -78,13 +78,10 @@ export async function nodeModulesCheck(repository: string, ownername: string, se
 				Authorization: 'Bearer ' + secret_token
 			}
 		});
-		console.log(result.data.toString);
-		if(result.status=200){
-			console.log('Success - CODEOWNERS file is present');
+		if(!result.data["TypeScript"] == undefined){
+			console.log('Ts present')
 		}
-		else{
-			core.setFailed('Please add CODEOWNERS file');
-		}
+		
 	}
 	catch (err) {
 		console.log(err);
