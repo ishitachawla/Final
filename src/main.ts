@@ -28,7 +28,7 @@ async function main() {
 	//check for security/vulnerability bot
 	vulnerabilityBotCheck(repository, ownername, secret_token, octokit);
 	//1. check whether issue-template has been set up and 2. default label is need-to-triage
-	issueTemplateCheck();
+	issueTemplateCheck(repository, ownername, secret_token, octokit);
 	//Check whether standard labels have been set up
 	standardLabelsCheck(repository, ownername, secret_token, octokit)
 
