@@ -53,7 +53,7 @@ export async function codeOwnerCheck(repository: string, ownername: string, secr
 				Authorization: 'Bearer ' + secret_token
 			}
 		});
-		if(result.status = 200){
+		if(result.status == 200){
 			console.log('Success - CODEOWNERS file is present');
 		}
 		else{
@@ -79,9 +79,20 @@ export async function nodeModulesCheck(repository: string, ownername: string, se
 			}
 		});
 		if(result.data["TypeScript"] !== undefined){
-			console.log('ts func yes')
+			const includes_node_modules = await octokit.request('GET /repos/{owner}/{repo}/contents/node_modules', {
+				repo: repository,
+				owner: ownername,
+				headers: {
+					Authorization: 'Bearer ' + secret_token
+				}
+			});
+			if(includes_node_modules.status == 200){
+				core.setFailed('Please remove node_modules folder from master');
+			}
+			else{
+				console.log('Success - node_modules folder is not present in master');
+			}
 		}
-		
 	}
 	catch (err) {
 		console.log(err);
