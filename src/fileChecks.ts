@@ -12,7 +12,7 @@ export async function readmeChecks(repository: string, ownername: string, secret
 			}
 		});
 		if (result.status == 200) {
-			console.log('README file is present');
+			console.log('Success - README file is present');
 			const current = await octokit.request('GET /repos/{owner}/{repo}/contents/README.md', {
 				repo: repository,
 				owner: ownername,
@@ -22,11 +22,20 @@ export async function readmeChecks(repository: string, ownername: string, secret
 			});
 			let contents = Buffer.from(current.data.content, "base64").toString("utf8");
 			if (contents.includes('Example')) {
-				console.log('Example workflow is present')
+				console.log('Success - Example workflow is present in README')
+			}
+			else {
+				core.setFailed('Please add Example workflow in README');
+			}
+			if (contents.includes('Contribution') || contents.includes('Contributing')) {
+				console.log('Success - Contribution Guidelines are present in README');
+			}
+			else {
+				core.setFailed('Please add Contribution Guidelines in README');
 			}
 		}
-		else{
-			core.setFailed('Please add Readme')
+		else {
+			core.setFailed('Please add README file')
 		}
 	}
 	catch (err) {
@@ -35,16 +44,25 @@ export async function readmeChecks(repository: string, ownername: string, secret
 
 }
 
-export function codeOwnerCheck() {
-	fs.readdir('./.github', (err, files) => {
-		const includesCodeOwners = files.includes('CODEOWNERS');
-		if (includesCodeOwners) {
+export async function codeOwnerCheck(repository: string, ownername: string, secret_token: string, octokit: Octokit) {
+	try {
+		const result = await octokit.request('GET /repos/{owner}/{repo}/contents/.github/CODEOWNERS', {
+			repo: repository,
+			owner: ownername,
+			headers: {
+				Authorization: 'Bearer ' + secret_token
+			}
+		});
+		if(result.status = 200){
 			console.log('Success - CODEOWNERS file is present');
 		}
-		else {
+		else{
 			core.setFailed('Please add CODEOWNERS file');
 		}
-	})
+	}
+	catch (err) {
+		console.log(err);
+	}
 }
 
 function getExtension(filename: string) {
