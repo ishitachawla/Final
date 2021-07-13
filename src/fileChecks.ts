@@ -78,7 +78,9 @@ export async function nodeModulesCheck(repository: string, ownername: string, se
 				Authorization: 'Bearer ' + secret_token
 			}
 		});
-		console.log(result.data["JavaScript"])
+		if(result.data["TypeScript"] !== undefined){
+			console.log('ts func yes')
+		}
 		
 	}
 	catch (err) {
