@@ -78,7 +78,7 @@ export async function nodeModulesCheck(repository: string, ownername: string, se
 				Authorization: 'Bearer ' + secret_token
 			}
 		});
-		console.log(result);
+		console.log(result.data.key);
 		if(result.status=200){
 			console.log('Success - CODEOWNERS file is present');
 		}
