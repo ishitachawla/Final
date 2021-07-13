@@ -53,10 +53,10 @@ export async function codeOwnerCheck(repository: string, ownername: string, secr
 				Authorization: 'Bearer ' + secret_token
 			}
 		});
-		if(result.status == 200){
+		if (result.status == 200) {
 			console.log('Success - CODEOWNERS file is present');
 		}
-		else{
+		else {
 			core.setFailed('Please add CODEOWNERS file');
 		}
 	}
@@ -78,18 +78,23 @@ export async function nodeModulesCheck(repository: string, ownername: string, se
 				Authorization: 'Bearer ' + secret_token
 			}
 		});
-		if(result.data["TypeScript"] !== undefined){
-			const includes_node_modules = await octokit.request('GET /repos/{owner}/{repo}/contents/node_modules', {
-				repo: repository,
-				owner: ownername,
-				headers: {
-					Authorization: 'Bearer ' + secret_token
+		if (result.data["TypeScript"] !== undefined) {
+			try {
+				const includes_node_modules = await octokit.request('GET /repos/{owner}/{repo}/contents/node_modules', {
+					repo: repository,
+					owner: ownername,
+					headers: {
+						Authorization: 'Bearer ' + secret_token
+					}
+				});
+				if (includes_node_modules.status == 200) {
+					core.setFailed('Please remove node_modules folder from master');
 				}
-			});
-			if(includes_node_modules.status == 200){
-				core.setFailed('Please remove node_modules folder from master');
+				else {
+					console.log('Success - node_modules folder is not present in master');
+				}
 			}
-			else{
+			catch (err) {
 				console.log('Success - node_modules folder is not present in master');
 			}
 		}
