@@ -78,7 +78,7 @@ export async function nodeModulesCheck(repository: string, ownername: string, se
 				Authorization: 'Bearer ' + secret_token
 			}
 		});
-		console.log(result.data["TypeScript"])
+		console.log(result.data["JavaScript"])
 		
 	}
 	catch (err) {
