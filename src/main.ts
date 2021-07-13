@@ -13,25 +13,30 @@ async function main() {
 	const octokit = new Octokit({
 		auth: secret_token,
 	});
-	const repository = github.context.repo.repo;
+	var repositories = core.getInput('repositories');
+	var repositories_list = repositories.split(',');
 	const ownername = github.context.repo.owner;
-	//Check for example and Contribution in README
-	readmeChecks(repository, ownername, secret_token, octokit);
-	//Check for CODEOWNERS file in .github folder
-	codeOwnerCheck(repository, ownername, secret_token, octokit);
-	//Check if nodemodules folder is present in master branch for typescript action
-	nodeModulesCheck(repository, ownername, secret_token, octokit);
-	//check for branch permissions in main/master and releases/*
-	branchPermissionCheck(repository, ownername, secret_token, octokit);
-	//check for nodemodules folder in releases/*
-	releasesNodeModulesCheck(repository, ownername, secret_token, octokit);
-	//check for security/vulnerability bot
-	vulnerabilityBotCheck(repository, ownername, secret_token, octokit);
-	//1. check whether issue-template has been set up and 2. default label is need-to-triage
-	issueTemplateCheck(repository, ownername, secret_token, octokit);
-	//Check whether standard labels have been set up
-	standardLabelsCheck(repository, ownername, secret_token, octokit)
-
+	var repository = '';
+	for (var i = 0; i < repositories_list.length; i++) {
+		repository = repositories_list[i];
+		console.log('*******' + repository + '*******');
+		//Check for example and Contribution in README
+		readmeChecks(repository, ownername, secret_token, octokit);
+		//Check for CODEOWNERS file in .github folder
+		codeOwnerCheck(repository, ownername, secret_token, octokit);
+		//Check if nodemodules folder is present in master branch for typescript action
+		nodeModulesCheck(repository, ownername, secret_token, octokit);
+		//check for branch permissions in main/master and releases/*
+		branchPermissionCheck(repository, ownername, secret_token, octokit);
+		//check for nodemodules folder in releases/*
+		releasesNodeModulesCheck(repository, ownername, secret_token, octokit);
+		//check for security/vulnerability bot
+		vulnerabilityBotCheck(repository, ownername, secret_token, octokit);
+		//1. check whether issue-template has been set up and 2. default label is need-to-triage
+		issueTemplateCheck(repository, ownername, secret_token, octokit);
+		//Check whether standard labels have been set up
+		standardLabelsCheck(repository, ownername, secret_token, octokit)
+	}
 }
 
 main();
