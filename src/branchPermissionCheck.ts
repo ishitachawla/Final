@@ -38,6 +38,6 @@ async function branchPermissionCheckHelper(branchname: string, repository: strin
         }
     } 
     catch(err){
-        console.log(err);
+        core.setFailed('Please enable Require review from Code Owners for '+ branchname)
     }        
 }
