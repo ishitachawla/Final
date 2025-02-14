@@ -19,7 +19,7 @@
   "homepage": "https://github.com/ishitachawla/Final#readme",
   "dependencies": {
     "@actions/core": "^1.4.0",
-    "@actions/github": "^5.0.0"
+    "@actions/github": "^6.0.0"
   },
   "devDependencies": {
     "@types/node": "^15.12.5"
